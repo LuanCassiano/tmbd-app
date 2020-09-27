@@ -1,6 +1,7 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { FlatList, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 import { getSectionItems } from '../../helpers/getFiveItemsBySection';
 
@@ -8,6 +9,7 @@ import * as Styled from './styles';
 
 import Header from '../../components/Header';
 import CardMovie from '../../components/CardMovie';
+import Loading from '../../components/Loading';
 
 import * as MovieActions from '../../store/module/Movie/actions';
 
@@ -19,6 +21,8 @@ import ISectionContent from './interfaces/ISectionContent';
 import sectionJson from '../../data/section.json';
 
 export default function Home(): ReactElement {
+    const navigation = useNavigation();
+
     const dispatch = useDispatch();
 
     const { loading, upcoming, nowPlaying, popular, topRated } = useSelector(
@@ -54,6 +58,10 @@ export default function Home(): ReactElement {
         dispatch(MovieActions.getTopRatedRequest());
     }
 
+    function onNavigate(screen: string): void {
+        navigation.navigate(screen);
+    }
+
     function _renderSection(data: IMovie[]): ReactElement {
         return (
             <FlatList
@@ -68,7 +76,7 @@ export default function Home(): ReactElement {
         );
     }
 
-    function getSection(section: string) {
+    function getSection(section: string): string {
         const renderContent: ISectionContent = {
             upcoming: _renderSection(upcomingSectionItems),
             now_playing: _renderSection(nowPlayingSectionItems),
@@ -108,21 +116,29 @@ export default function Home(): ReactElement {
         <Styled.Container>
             <Header title="tmdb" />
 
-            <ScrollView showsVerticalScrollIndicator={false}>
-                {sectionJson.map(item => (
-                    <Styled.Section key={item.id}>
-                        <Styled.Row>
-                            <Styled.Title>{item.sectionName}</Styled.Title>
-                            <Styled.SectionAction onPress={(): void => {}}>
-                                <Styled.SectionActionText>
-                                    See all
-                                </Styled.SectionActionText>
-                            </Styled.SectionAction>
-                        </Styled.Row>
-                        {getSection(item.sectionKeyText)}
-                    </Styled.Section>
-                ))}
-            </ScrollView>
+            {loading ? (
+                <Loading />
+            ) : (
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    {sectionJson.map(item => (
+                        <Styled.Section key={item.id}>
+                            <Styled.Row>
+                                <Styled.Title>{item.sectionName}</Styled.Title>
+                                <Styled.SectionAction
+                                    onPress={(): void =>
+                                        onNavigate(item.sectionKeyText)
+                                    }
+                                >
+                                    <Styled.SectionActionText>
+                                        See all
+                                    </Styled.SectionActionText>
+                                </Styled.SectionAction>
+                            </Styled.Row>
+                            {getSection(item.sectionKeyText)}
+                        </Styled.Section>
+                    ))}
+                </ScrollView>
+            )}
         </Styled.Container>
     );
 }
