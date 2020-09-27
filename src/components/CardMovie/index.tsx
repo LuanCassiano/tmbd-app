@@ -8,7 +8,7 @@ import * as Styled from './styles';
 
 export default function CardMovie({ data }: ICardMovie): ReactElement {
     return (
-        <Styled.Container>
+        <Styled.Container onPress={(): void => {}}>
             <Styled.Card>
                 <Styled.CardMedia
                     source={{ uri: `${IMAGE_URL}${data.poster_path}` }}
@@ -16,7 +16,9 @@ export default function CardMovie({ data }: ICardMovie): ReactElement {
             </Styled.Card>
 
             <Styled.CardBody>
-                <Styled.CardTitle>{data.title}</Styled.CardTitle>
+                <Styled.CardTitle numberOfLines={2}>
+                    {data.title}
+                </Styled.CardTitle>
 
                 <Styled.Row>
                     <Styled.CardLabel>{data.vote_average}</Styled.CardLabel>
