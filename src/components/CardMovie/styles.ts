@@ -1,10 +1,10 @@
 import styled from 'styled-components/native';
 
-export const Container = styled.View`
+export const Container = styled.TouchableOpacity`
     margin-top: 10px;
 `;
 
-export const Card = styled.TouchableOpacity`
+export const Card = styled.View`
     width: 150px;
     height: 200px;
     margin-right: 25px;
@@ -18,12 +18,13 @@ export const CardMedia = styled.Image`
 `;
 
 export const CardBody = styled.View`
+    flex: 1;
     margin-top: 5px;
 `;
 
 export const CardTitle = styled.Text`
-    font-family: 'Montserrat-Bold';
-    font-size: 12px;
+    font-family: 'Montserrat-Black';
+    font-size: 10px;
     color: #f5f5f5;
 `;
 
