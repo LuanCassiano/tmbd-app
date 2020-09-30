@@ -11,73 +11,22 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-import { IMAGE_URL } from '../../helpers/Constants';
-
 import Loading from '../../components/Loading';
+import AnimatedHeader from '../../components/AnimatedHeader';
+
+import * as Styled from './styles';
 
 import { NavigationProps } from '../../routes';
 
 import * as MovieActions from '../../store/module/Movie/actions';
 import { RootState } from '../../store/module/rootReducer';
 
+import IconStar from '../../assets/icons/star_1.png';
+import IconGroup from '../../assets/icons/group.png';
+
 const HEADER_MAX_HEIGHT = 300;
 const HEADER_MIN_HEIGHT = Platform.OS === 'ios' ? 60 : 100;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
-
-const styles = StyleSheet.create({
-    fill: {
-        flex: 1,
-    },
-    content: {
-        flex: 1,
-    },
-    header: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        backgroundColor: '#000000',
-        overflow: 'hidden',
-        height: HEADER_MAX_HEIGHT,
-        elevation: 5,
-    },
-    backgroundImage: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        width: undefined,
-        height: HEADER_MAX_HEIGHT,
-        resizeMode: 'cover',
-    },
-    bar: {
-        backgroundColor: 'transparent',
-        marginTop: Platform.OS === 'ios' ? 50 : 50,
-        height: 32,
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        elevation: 5,
-    },
-    title: {
-        color: 'white',
-        fontSize: 18,
-    },
-    scrollViewContent: {
-        // iOS uses content inset, which acts like padding.
-        paddingTop: Platform.OS !== 'ios' ? HEADER_MAX_HEIGHT : 0,
-    },
-    row: {
-        height: 40,
-        margin: 16,
-        backgroundColor: '#D3D3D3',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});
 
 export default function MovieDetails(): ReactElement {
     const navigation = useNavigation<NavigationProps>();
@@ -138,7 +87,7 @@ export default function MovieDetails(): ReactElement {
     }, []);
 
     return (
-        <View style={{ flex: 1, backgroundColor: '#151515' }}>
+        <Styled.Container>
             {loading ? (
                 <Loading />
             ) : (
@@ -149,7 +98,9 @@ export default function MovieDetails(): ReactElement {
                         backgroundColor="rgba(0, 0, 0, 0.251)"
                     />
                     <Animated.ScrollView
-                        style={styles.fill}
+                        style={{
+                            flex: 1,
+                        }}
                         scrollEventThrottle={1}
                         contentInset={{ top: HEADER_MAX_HEIGHT }}
                         contentOffset={{ y: -HEADER_MAX_HEIGHT }}
@@ -164,307 +115,155 @@ export default function MovieDetails(): ReactElement {
                             { useNativeDriver: true },
                         )}
                     >
-                        <View
-                            style={{
-                                paddingTop: 320,
-                                paddingLeft: 20,
-                                paddingRight: 20,
-                                paddingBottom: 20,
-                            }}
-                        >
-                            <View style={{ alignItems: 'center' }}>
-                                <Text
-                                    style={{
-                                        fontSize: 20,
-                                        fontFamily: 'Montserrat-SemiBold',
-                                        color: '#fff9c4',
-                                    }}
-                                >
-                                    {movieDetail.title}
-                                </Text>
-                            </View>
+                        <Styled.Content>
+                            <Styled.TitleContainer>
+                                <Styled.Title>{movieDetail.title}</Styled.Title>
+                            </Styled.TitleContainer>
 
-                            <View
-                                style={{
-                                    marginTop: 20,
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-around',
-                                }}
-                            >
-                                <Text
-                                    style={{
-                                        fontSize: 14,
-                                        fontFamily: 'Montserrat-SemiBold',
-                                        color: '#fff9c4',
-                                    }}
-                                >
-                                    {movieDetail.vote_average}
-                                </Text>
-                                <Text
-                                    style={{
-                                        fontSize: 14,
-                                        fontFamily: 'Montserrat-SemiBold',
-                                        color: '#fff9c4',
-                                    }}
-                                >
-                                    {movieDetail.vote_count} votes
-                                </Text>
-                                <Text
-                                    style={{
-                                        fontSize: 14,
-                                        fontFamily: 'Montserrat-SemiBold',
-                                        color: '#fff9c4',
-                                    }}
-                                >
-                                    {movieDetail.popularity}
-                                </Text>
-                            </View>
-
-                            <View style={{ marginTop: 20 }}>
-                                <Text
-                                    style={{
-                                        color: '#fff9c4',
-                                        fontSize: 12,
-                                        fontFamily: 'Montserrat-Bold',
-                                        marginBottom: 10,
-                                    }}
-                                >
-                                    Overview
-                                </Text>
-                                <Text
-                                    style={{
-                                        fontSize: 16,
-                                        fontFamily: 'Montserrat-Regular',
-                                        color: '#f5f5f5',
-                                    }}
-                                >
-                                    {movieDetail.overview}
-                                </Text>
-                            </View>
-
-                            <View style={{ marginTop: 20 }}>
-                                <Text
-                                    style={{
-                                        color: '#fff9c4',
-                                        fontSize: 12,
-                                        fontFamily: 'Montserrat-Bold',
-                                        marginBottom: 10,
-                                    }}
-                                >
-                                    Genre
-                                </Text>
-                                <View style={{ flexDirection: 'row' }}>
-                                    {movieDetail.genres.map(item => (
-                                        <View
-                                            key={item.id}
+                            <Styled.SectionEvaluation>
+                                <Styled.Row>
+                                    <View
+                                        style={{
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                        }}
+                                    >
+                                        <Image
+                                            source={IconStar}
                                             style={{
-                                                borderWidth: 1,
-                                                borderColor: '#f5f5f5',
-                                                marginRight: 10,
-                                                borderRadius: 5,
-                                                paddingLeft: 10,
-                                                paddingRight: 10,
-                                                paddingVertical: 5,
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
+                                                width: 10,
+                                                height: 10,
+                                                marginRight: 5,
                                             }}
-                                        >
-                                            <Text style={{ color: '#f5f5f5' }}>
+                                        />
+                                    </View>
+                                    <Styled.SectionEvaluationText>
+                                        {movieDetail.vote_average}
+                                    </Styled.SectionEvaluationText>
+                                </Styled.Row>
+
+                                <Styled.SectionEvaluationText>
+                                    {movieDetail.vote_count} votes
+                                </Styled.SectionEvaluationText>
+
+                                <Styled.Row>
+                                    <View
+                                        style={{
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                        }}
+                                    >
+                                        <Image
+                                            source={IconGroup}
+                                            style={{
+                                                width: 15,
+                                                height: 15,
+                                                marginRight: 5,
+                                            }}
+                                        />
+                                    </View>
+                                    <Styled.SectionEvaluationText>
+                                        {movieDetail.popularity}
+                                    </Styled.SectionEvaluationText>
+                                </Styled.Row>
+                            </Styled.SectionEvaluation>
+
+                            <Styled.Section>
+                                <Styled.Label>Overview</Styled.Label>
+
+                                <Styled.Paragraph>
+                                    {movieDetail.overview}
+                                </Styled.Paragraph>
+                            </Styled.Section>
+
+                            <Styled.Section>
+                                <Styled.Label>Genre</Styled.Label>
+
+                                <Styled.Row>
+                                    {movieDetail.genres.map(item => (
+                                        <Styled.TagContainer key={item.id}>
+                                            <Styled.TagTitle>
                                                 {item.name}
-                                            </Text>
-                                        </View>
+                                            </Styled.TagTitle>
+                                        </Styled.TagContainer>
                                     ))}
-                                </View>
-                            </View>
+                                </Styled.Row>
+                            </Styled.Section>
 
-                            <View style={{ marginTop: 20 }}>
-                                <Text
-                                    style={{
-                                        color: '#fff9c4',
-                                        fontSize: 12,
-                                        fontFamily: 'Montserrat-Bold',
-                                        marginBottom: 10,
-                                    }}
-                                >
-                                    Spoken languages
-                                </Text>
+                            <Styled.Section>
+                                <Styled.Label>Spoken languages</Styled.Label>
 
-                                <View style={{ flexDirection: 'row' }}>
+                                <Styled.Row>
                                     {movieDetail.spoken_languages.map(
                                         (item, index) => (
-                                            <View
-                                                key={index}
-                                                style={{
-                                                    borderWidth: 1,
-                                                    borderColor: '#f5f5f5',
-                                                    marginRight: 10,
-                                                    borderRadius: 5,
-                                                    paddingLeft: 10,
-                                                    paddingRight: 10,
-                                                    paddingVertical: 5,
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center',
-                                                }}
-                                            >
-                                                <Text
-                                                    style={{ color: '#f5f5f5' }}
-                                                >
+                                            <Styled.TagContainer key={index}>
+                                                <Styled.TagTitle>
                                                     {item.name}
-                                                </Text>
-                                            </View>
+                                                </Styled.TagTitle>
+                                            </Styled.TagContainer>
                                         ),
                                     )}
-                                </View>
-                            </View>
+                                </Styled.Row>
+                            </Styled.Section>
 
-                            <View style={{ marginTop: 20 }}>
-                                <Text
-                                    style={{
-                                        color: '#fff9c4',
-                                        fontSize: 12,
-                                        fontFamily: 'Montserrat-Bold',
-                                        marginBottom: 10,
-                                    }}
-                                >
+                            <Styled.Section>
+                                <Styled.Label>
                                     Production companies
-                                </Text>
+                                </Styled.Label>
 
-                                <View style={{ flexDirection: 'row' }}>
+                                <Styled.Row>
                                     {movieDetail.production_companies.map(
                                         item => (
-                                            <View
-                                                key={item.id}
-                                                style={{
-                                                    borderWidth: 1,
-                                                    borderColor: '#f5f5f5',
-                                                    marginRight: 10,
-                                                    borderRadius: 5,
-                                                    paddingLeft: 10,
-                                                    paddingRight: 10,
-                                                    paddingVertical: 5,
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center',
-                                                }}
-                                            >
-                                                <Text
-                                                    style={{ color: '#f5f5f5' }}
-                                                >
+                                            <Styled.TagContainer key={item.id}>
+                                                <Styled.TagTitle>
                                                     {item.name}
-                                                </Text>
-                                            </View>
+                                                </Styled.TagTitle>
+                                            </Styled.TagContainer>
                                         ),
                                     )}
-                                </View>
-                            </View>
+                                </Styled.Row>
+                            </Styled.Section>
 
-                            <View style={{ marginTop: 20 }}>
-                                <Text
-                                    style={{
-                                        color: '#fff9c4',
-                                        fontSize: 12,
-                                        fontFamily: 'Montserrat-Bold',
-                                        marginBottom: 10,
-                                    }}
-                                >
+                            <Styled.Section>
+                                <Styled.Label>
                                     Production countries
-                                </Text>
+                                </Styled.Label>
 
-                                <View style={{ flexDirection: 'row' }}>
+                                <Styled.Row>
                                     {movieDetail.production_countries.map(
-                                        item => (
-                                            <View
-                                                key={item.iso_639_1}
-                                                style={{
-                                                    borderWidth: 1,
-                                                    borderColor: '#f5f5f5',
-                                                    marginRight: 10,
-                                                    borderRadius: 5,
-                                                    paddingLeft: 10,
-                                                    paddingRight: 10,
-                                                    paddingVertical: 5,
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center',
-                                                }}
-                                            >
-                                                <Text
-                                                    style={{ color: '#f5f5f5' }}
-                                                >
+                                        (item, index) => (
+                                            <Styled.TagContainer key={index}>
+                                                <Styled.TagTitle>
                                                     {item.name}
-                                                </Text>
-                                            </View>
+                                                </Styled.TagTitle>
+                                            </Styled.TagContainer>
                                         ),
                                     )}
-                                </View>
-                            </View>
+                                </Styled.Row>
+                            </Styled.Section>
 
-                            <View style={{ marginTop: 20 }}>
-                                <Text
-                                    style={{
-                                        color: '#fff9c4',
-                                        fontSize: 12,
-                                        fontFamily: 'Montserrat-Bold',
-                                        marginBottom: 10,
-                                    }}
-                                >
-                                    Release date
-                                </Text>
+                            <Styled.Section>
+                                <Styled.Label>Release date</Styled.Label>
 
-                                <Text
-                                    style={{
-                                        fontSize: 16,
-                                        fontFamily: 'Montserrat-Regular',
-                                        color: '#f5f5f5',
-                                    }}
-                                >
+                                <Styled.Paragraph>
                                     {movieDetail.release_date}
-                                </Text>
-                            </View>
-                        </View>
+                                </Styled.Paragraph>
+                            </Styled.Section>
+                        </Styled.Content>
                     </Animated.ScrollView>
-                    <Animated.View
-                        pointerEvents="none"
-                        style={[
-                            styles.header,
-                            { transform: [{ translateY: headerTranslate }] },
-                        ]}
-                    >
-                        <Animated.Image
-                            style={[
-                                styles.backgroundImage,
-                                {
-                                    opacity: imageOpacity,
-                                    transform: [{ translateY: imageTranslate }],
-                                },
-                            ]}
-                            source={{
-                                uri: `${IMAGE_URL}${movieDetail.poster_path}`,
-                            }}
-                        />
-                    </Animated.View>
-                    <Animated.View
-                        style={[
-                            styles.bar,
-                            {
-                                opacity: headerOpacity,
-                                transform: [
-                                    { scale: titleScale },
-                                    { translateY: titleTranslate },
-                                ],
-                            },
-                        ]}
-                    >
-                        <Text
-                            style={{
-                                color: '#fff9c4',
-                                fontSize: 20,
-                                fontFamily: 'Montserrat-SemiBold',
-                            }}
-                        >
-                            {movieDetail.title}
-                        </Text>
-                    </Animated.View>
+
+                    <AnimatedHeader
+                        title={movieDetail.title}
+                        image_url={movieDetail.poster_path}
+                        headerOpacityAnimation={headerOpacity}
+                        headerTranslateAnimation={headerTranslate}
+                        imageOpacityAnimation={imageOpacity}
+                        imageTranslateAnimation={imageTranslate}
+                        titleScaleAnimation={titleScale}
+                        titleTranslateAnimation={titleTranslate}
+                    />
                 </>
             )}
-        </View>
+        </Styled.Container>
     );
 }
