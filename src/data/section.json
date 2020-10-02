@@ -3,20 +3,5 @@
         "id": 1,
         "sectionName": "Upcoming",
         "sectionKeyText": "upcoming"
-    },
-    {
-        "id": 2,
-        "sectionName": "Now Playing",
-        "sectionKeyText": "now_playing"
-    },
-    {
-        "id": 3,
-        "sectionName": "Popular",
-        "sectionKeyText": "popular"
-    },
-    {
-        "id": 4,
-        "sectionName": "Top Rated",
-        "sectionKeyText": "top_rated"
     }
 ]

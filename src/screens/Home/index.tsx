@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react';
-import { FlatList, ScrollView } from 'react-native';
+import { FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
@@ -18,27 +18,20 @@ import { RootState } from '../../store/module/rootReducer';
 import IMovie from '../../interfaces/IMovie';
 import ISectionContent from './interfaces/ISectionContent';
 
+import { NavigationProps } from '../../routes';
+
 import sectionJson from '../../data/section.json';
 
 export default function Home(): ReactElement {
-    const navigation = useNavigation();
+    const navigation = useNavigation<NavigationProps>();
 
     const dispatch = useDispatch();
 
-    const { loading, upcoming, nowPlaying, popular, topRated } = useSelector(
+    const { loading, upcoming } = useSelector(
         (state: RootState) => state.movie,
     );
 
     const [upcomingSectionItems, setUpcomingSectionItems] = useState<IMovie[]>(
-        [],
-    );
-    const [nowPlayingSectionItems, setNowPlayingSectionItems] = useState<
-        IMovie[]
-    >([]);
-    const [popularSectionItems, setPopularSectionItems] = useState<IMovie[]>(
-        [],
-    );
-    const [topRatedSectionItems, setTopRatedSectionItems] = useState<IMovie[]>(
         [],
     );
 
@@ -46,20 +39,10 @@ export default function Home(): ReactElement {
         dispatch(MovieActions.getUpcomingRequest());
     }
 
-    function getNowPlayingMovies(): void {
-        dispatch(MovieActions.getNowPlayingRequest());
-    }
-
-    function getPopularMovies(): void {
-        dispatch(MovieActions.getPopularRequest());
-    }
-
-    function getTopRatedMovies(): void {
-        dispatch(MovieActions.getTopRatedRequest());
-    }
-
-    function onNavigate(screen: string): void {
-        navigation.navigate(screen);
+    function onNavigate(idMovie: number): void {
+        navigation.navigate('movieDetails', {
+            id: idMovie,
+        });
     }
 
     function _renderSection(data: IMovie[]): ReactElement {
@@ -68,10 +51,11 @@ export default function Home(): ReactElement {
                 keyExtractor={(item: IMovie): string => String(item.id)}
                 data={data}
                 renderItem={({ item }): ReactElement => (
-                    <CardMovie data={item} />
+                    <CardMovie data={item} action={onNavigate} />
                 )}
-                horizontal
-                showsHorizontalScrollIndicator={false}
+                numColumns={2}
+                contentContainerStyle={{ paddingBottom: 30 }}
+                showsVerticalScrollIndicator={false}
             />
         );
     }
@@ -79,9 +63,6 @@ export default function Home(): ReactElement {
     function getSection(section: string): string {
         const renderContent: ISectionContent = {
             upcoming: _renderSection(upcomingSectionItems),
-            now_playing: _renderSection(nowPlayingSectionItems),
-            popular: _renderSection(popularSectionItems),
-            top_rated: _renderSection(topRatedSectionItems),
         };
 
         return renderContent[section];
@@ -89,9 +70,6 @@ export default function Home(): ReactElement {
 
     useEffect(() => {
         getUpcomingMovies();
-        getNowPlayingMovies();
-        getPopularMovies();
-        getTopRatedMovies();
     }, []);
 
     useEffect(() => {
@@ -99,18 +77,9 @@ export default function Home(): ReactElement {
             const response = getSectionItems(upcoming);
             setUpcomingSectionItems(response.sectionItem);
 
-            const responseNowPlaying = getSectionItems(nowPlaying);
-            setNowPlayingSectionItems(responseNowPlaying.sectionItem);
-
-            const responsePopular = getSectionItems(popular);
-            setPopularSectionItems(responsePopular.sectionItem);
-
-            const responseTopRated = getSectionItems(topRated);
-            setTopRatedSectionItems(responseTopRated.sectionItem);
-
             return;
         }
-    }, [upcoming, nowPlaying, popular, topRated]);
+    }, [upcoming]);
 
     return (
         <Styled.Container>
@@ -119,25 +88,13 @@ export default function Home(): ReactElement {
             {loading ? (
                 <Loading />
             ) : (
-                <ScrollView showsVerticalScrollIndicator={false}>
+                <>
                     {sectionJson.map(item => (
                         <Styled.Section key={item.id}>
-                            <Styled.Row>
-                                <Styled.Title>{item.sectionName}</Styled.Title>
-                                <Styled.SectionAction
-                                    onPress={(): void =>
-                                        onNavigate(item.sectionKeyText)
-                                    }
-                                >
-                                    <Styled.SectionActionText>
-                                        See all
-                                    </Styled.SectionActionText>
-                                </Styled.SectionAction>
-                            </Styled.Row>
                             {getSection(item.sectionKeyText)}
                         </Styled.Section>
                     ))}
-                </ScrollView>
+                </>
             )}
         </Styled.Container>
     );

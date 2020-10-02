@@ -6,9 +6,9 @@ import ICardMovie from './interfaces/ICardMovie';
 
 import * as Styled from './styles';
 
-export default function CardMovie({ data }: ICardMovie): ReactElement {
+export default function CardMovie({ data, action }: ICardMovie): ReactElement {
     return (
-        <Styled.Container onPress={(): void => {}}>
+        <Styled.Container onPress={(): void => action(data.id)}>
             <Styled.Card>
                 <Styled.CardMedia
                     source={{ uri: `${IMAGE_URL}${data.poster_path}` }}
