@@ -6,7 +6,7 @@ export const Container = styled.View`
 `;
 
 export const Section = styled.View`
-    padding: 20px;
+    padding: 0px 20px 20px 20px;
 `;
 
 export const Title = styled.Text`
