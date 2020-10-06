@@ -10,6 +10,44 @@ const INITIAL_STATE: IMovieStateReducer = {
     topRated: [],
     discover: [],
     movies: [],
+    movieDetail: {
+        adult: false,
+        backdrop_path: '',
+        genres: [],
+        original_language: '',
+        original_title: '',
+        overview: '',
+        popularity: 0,
+        poster_path: '',
+        release_date: '',
+        title: '',
+        video: false,
+        vote_average: 0,
+        vote_count: 0,
+        budget: 0,
+        production_companies: [
+            {
+                id: 0,
+                name: '',
+            },
+        ],
+        production_countries: [
+            {
+                iso_639_1: '',
+                name: '',
+            },
+        ],
+        revenue: 0,
+        runtime: 0,
+        spoken_languages: [
+            {
+                iso_639_1: '',
+                name: '',
+            },
+        ],
+        status: '',
+        tagline: '',
+    },
 };
 
 export default function movie(
@@ -29,36 +67,14 @@ export default function movie(
                 break;
             }
 
-            case MovieTypes.GET_NOW_PLAYING_REQUEST: {
+            case MovieTypes.GET_MOVIE_DETAIL_REQUEST: {
                 draft.loading = true;
                 break;
             }
 
-            case MovieTypes.GET_NOW_PLAYING_SUCCESS: {
+            case MovieTypes.GET_MOVIE_DETAIL_SUCCESS: {
                 draft.loading = false;
-                draft.nowPlaying = action.payload;
-                break;
-            }
-
-            case MovieTypes.GET_POPULAR_REQUEST: {
-                draft.loading = true;
-                break;
-            }
-
-            case MovieTypes.GET_POPULAR_SUCCESS: {
-                draft.loading = false;
-                draft.popular = action.payload;
-                break;
-            }
-
-            case MovieTypes.GET_TOP_RATED_REQUEST: {
-                draft.loading = true;
-                break;
-            }
-
-            case MovieTypes.GET_TOP_RATED_SUCCESS: {
-                draft.loading = false;
-                draft.topRated = action.payload;
+                draft.movieDetail = action.payload;
                 break;
             }
 

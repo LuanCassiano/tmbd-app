@@ -28,41 +28,16 @@ export function getUpcomingSuccess(data: IMovie[]): IAction<IMovie[]> {
     };
 }
 
-export function getNowPlayingRequest(): IAction {
+export function getMovieDetailsRequest(idMovie: number): IAction<number> {
     return {
-        type: MovieTypes.GET_NOW_PLAYING_REQUEST,
+        type: MovieTypes.GET_MOVIE_DETAIL_REQUEST,
+        payload: idMovie,
     };
 }
 
-export function getNowPlayingSuccess(data: IMovie[]): IAction<IMovie[]> {
+export function getMovieDetailsSuccess(data: IMovie): IAction<IMovie> {
     return {
-        type: MovieTypes.GET_NOW_PLAYING_SUCCESS,
-        payload: data,
-    };
-}
-
-export function getPopularRequest(): IAction {
-    return {
-        type: MovieTypes.GET_POPULAR_REQUEST,
-    };
-}
-
-export function getPopularSuccess(data: IMovie[]): IAction<IMovie[]> {
-    return {
-        type: MovieTypes.GET_POPULAR_SUCCESS,
-        payload: data,
-    };
-}
-
-export function getTopRatedRequest(): IAction {
-    return {
-        type: MovieTypes.GET_TOP_RATED_REQUEST,
-    };
-}
-
-export function getTopRatedSuccess(data: IMovie[]): IAction<IMovie[]> {
-    return {
-        type: MovieTypes.GET_TOP_RATED_SUCCESS,
+        type: MovieTypes.GET_MOVIE_DETAIL_SUCCESS,
         payload: data,
     };
 }

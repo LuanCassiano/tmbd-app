@@ -1,9 +1,15 @@
 import { Dimensions } from 'react-native';
 import styled from 'styled-components/native';
 
+<<<<<<< HEAD
 // export const Container = styled.TouchableOpacity`
 //     margin: 10px;
 // `;
+=======
+export const Container = styled.TouchableOpacity`
+    margin-bottom: 20px;
+`;
+>>>>>>> cf4d3009b3dd2e1af070fcaa29648598d570a047
 
 export const Card = styled.View`
     padding: 20px;

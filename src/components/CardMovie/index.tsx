@@ -5,7 +5,7 @@ import ICardMovie from './interfaces/ICardMovie';
 
 import * as Styled from './styles';
 
-export default function CardMovie({ data }: ICardMovie): ReactElement {
+export default function CardMovie({ data, action }: ICardMovie): ReactElement {
     return (
         <Styled.Card>
             <Styled.CardMedia

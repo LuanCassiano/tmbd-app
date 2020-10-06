@@ -7,5 +7,6 @@ export interface IMovieStateReducer {
     readonly popular: IMovie[];
     readonly topRated: IMovie[];
     readonly movies: IMovie[];
+    readonly movieDetail: IMovie;
     readonly loading: boolean;
 }

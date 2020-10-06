@@ -1,24 +1,23 @@
 import React, { ReactElement } from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import {
+    createStackNavigator,
+    StackNavigationProp,
+} from '@react-navigation/stack';
 
 import HomeScreen from '../screens/Home';
-import UpcomingScreen from '../screens/Upcoming';
+import MovieDetailScreen from '../screens/MovieDetails';
 
 const Stack = createStackNavigator();
 
-function UpcomingNavigator(): ReactElement {
-    return (
-        <Stack.Navigator headerMode="none">
-            <Stack.Screen name="upcomingMovies" component={UpcomingScreen} />
-        </Stack.Navigator>
-    );
-}
+type RootStackParamList = {
+    movieDetails: { id: string } | undefined;
+};
 
 function HomeNavigator(): ReactElement {
     return (
         <Stack.Navigator headerMode="none" initialRouteName="upcoming">
             <Stack.Screen name="home" component={HomeScreen} />
-            <Stack.Screen name="upcoming" component={UpcomingNavigator} />
+            <Stack.Screen name="movieDetails" component={MovieDetailScreen} />
         </Stack.Navigator>
     );
 }
@@ -30,3 +29,8 @@ export default function RootNavigator(): ReactElement {
         </Stack.Navigator>
     );
 }
+
+export declare type NavigationProps = StackNavigationProp<
+    RootStackParamList,
+    'movieDetails'
+>;
