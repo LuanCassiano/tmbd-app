@@ -8,6 +8,8 @@ const INITIAL_STATE: IMovieStateReducer = {
     nowPlaying: [],
     popular: [],
     topRated: [],
+    discover: [],
+    movies: [],
 };
 
 export default function movie(
@@ -57,6 +59,17 @@ export default function movie(
             case MovieTypes.GET_TOP_RATED_SUCCESS: {
                 draft.loading = false;
                 draft.topRated = action.payload;
+                break;
+            }
+
+            case MovieTypes.GET_MOVIES_REQUEST: {
+                draft.loading = true;
+                break;
+            }
+
+            case MovieTypes.GET_MOVIES_SUCCESS: {
+                draft.loading = false;
+                draft.movies = action.payload;
                 break;
             }
 

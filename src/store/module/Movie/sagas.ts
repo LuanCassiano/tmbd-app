@@ -10,7 +10,25 @@ import {
     getNowPlayingSuccess,
     getPopularSuccess,
     getTopRatedSuccess,
+    getMoviesSuccess,
 } from './actions';
+
+export function* getMovies(): Generator {
+    try {
+        const response = (yield call(api.get, '/discover/movie', {
+            params: {
+                api_key: API_KEY,
+                page: 1,
+                language: 'pt-BR',
+                year: 2020,
+            },
+        })) as IApiResponse<IMovie[]>;
+
+        yield put(getMoviesSuccess(response.data.results));
+    } catch (error) {
+        console.tron.log('error', error);
+    }
+}
 
 export function* getUpcomingMovies(): Generator {
     try {
@@ -18,6 +36,7 @@ export function* getUpcomingMovies(): Generator {
             params: {
                 api_key: API_KEY,
                 page: 1,
+                language: 'pt-BR',
             },
         })) as IApiResponse<IMovie[]>;
 
@@ -73,6 +92,7 @@ export function* getTopRatedMovies(): Generator {
 }
 
 export default all([
+    takeLatest(MovieTypes.GET_MOVIES_REQUEST, getMovies),
     takeLatest(MovieTypes.GET_UPCOMING_REQUEST, getUpcomingMovies),
     takeLatest(MovieTypes.GET_NOW_PLAYING_REQUEST, getNowPlayingMovies),
     takeLatest(MovieTypes.GET_POPULAR_REQUEST, getPopularMovies),

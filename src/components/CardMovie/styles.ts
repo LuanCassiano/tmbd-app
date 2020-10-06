@@ -1,30 +1,38 @@
+import { Dimensions } from 'react-native';
 import styled from 'styled-components/native';
 
-export const Container = styled.TouchableOpacity`
-    margin-top: 10px;
-`;
+// export const Container = styled.TouchableOpacity`
+//     margin: 10px;
+// `;
 
 export const Card = styled.View`
-    width: 150px;
-    height: 200px;
-    margin-right: 25px;
+    padding: 20px;
     border-radius: 5px;
+    elevation: 5;
+    background-color: #000000;
+    flex-direction: row;
+    margin: 10px;
 `;
 
 export const CardMedia = styled.Image`
-    width: 150px;
-    height: 200px;
+    width: 100px;
     border-radius: 5px;
 `;
 
 export const CardBody = styled.View`
     flex: 1;
-    margin-top: 5px;
+    margin-left: 10px;
 `;
 
 export const CardTitle = styled.Text`
     font-family: 'Montserrat-Black';
-    font-size: 10px;
+    font-size: 14px;
+    color: #f5f5f5;
+`;
+
+export const CardParagraph = styled.Text`
+    font-family: 'Montserrat-Medium';
+    font-size: 14px;
     color: #f5f5f5;
 `;
 
@@ -38,5 +46,5 @@ export const CardLabel = styled.Text`
 export const Row = styled.View`
     flex-direction: row;
     justify-content: space-between;
-    margin-right: 25px;
+    margin-top: 20px;
 `;

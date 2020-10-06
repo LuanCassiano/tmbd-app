@@ -16,7 +16,7 @@ function UpcomingNavigator(): ReactElement {
 
 function HomeNavigator(): ReactElement {
     return (
-        <Stack.Navigator headerMode="none">
+        <Stack.Navigator headerMode="none" initialRouteName="upcoming">
             <Stack.Screen name="home" component={HomeScreen} />
             <Stack.Screen name="upcoming" component={UpcomingNavigator} />
         </Stack.Navigator>
